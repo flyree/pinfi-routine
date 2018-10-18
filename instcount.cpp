@@ -111,7 +111,7 @@ VOID CountInst(INS ins, VOID *v)
         int numW = INS_MaxNumWRegs(ins);
         bool hasfp = false;
         for (int i = 0; i < numW; i++){
-            reg = INS_RegW(ins, i);
+            REG reg = INS_RegW(ins, i);
             if (reg_map.isFloatReg(reg)) {
                 hasfp = true;
                 break;

@@ -27,6 +27,11 @@ KNOB<UINT32> firange_l(KNOB_MODE_WRITEONCE, "pintool", "firl", "0", "the first b
 KNOB<UINT32> firange_r(KNOB_MODE_WRITEONCE, "pintool", "firr", "64", "the last bit to inject");
 
 KNOB<UINT32> index_fi(KNOB_MODE_WRITEONCE,"pintool","idx","0","injecting index");
+
+KNOB<BOOL> fiecc(KNOB_MODE_WRITEONCE, "pintool", "e", "0", "enbale ecc error injection");
+KNOB<UINT32> multibits(KNOB_MODE_WRITEONCE,"pintool","m","2","how many bits to inject");
+KNOB<BOOL> consecutive(KNOB_MODE_WRITEONCE,"pintool","c","0","if the injected bits are consecutive");
+KNOB<UINT32> testing(KNOB_MODE_WRITEONCE,"pintool","tr","0","testing mode for writing 0 (1) or random values. (2)");
 //typedef uint64_t UINT64;
 //typedef uint32_t UINT32;
 

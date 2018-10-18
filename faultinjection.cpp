@@ -489,6 +489,7 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
     	if (!hasfp){
       		return;  
     	}
+    	}
     }
 
 	    INS_InsertPredicatedCall(
