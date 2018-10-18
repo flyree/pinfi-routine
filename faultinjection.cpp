@@ -655,11 +655,11 @@ int main(int argc, char *argv[])
 
 	get_instance_number(instcount_file.Value().c_str());
 
-	if (!fiecc.Value())
-	INS_AddInstrumentFunction(instruction_Instrumentation, 0);
+	//if (!fiecc.Value())
+	//INS_AddInstrumentFunction(instruction_Instrumentation, 0);
 
-	else
-		INS_AddInstrumentFunction(instruction_InstrumentationECC, 0);
+	//else
+	INS_AddInstrumentFunction(instruction_InstrumentationFP, 0);
 
 	PIN_AddFiniFunction(Fini, 0);
 
