@@ -18,8 +18,8 @@
 //#define NOSTACKFRAMEOP
 //#define ONLYFP
 
-KNOB<string> instcount_file(KNOB_MODE_WRITEONCE, "pintool",
-    "o", "pin.instcount.txt", "specify instruction count file name");
+//KNOB<string> instcount_file(KNOB_MODE_WRITEONCE, "pintool",
+ //   "o", "pin.instcount.txt", "specify instruction count file name");
 
 static UINT64 fi_all = 0;
 static UINT64 fi_ccs = 0;
