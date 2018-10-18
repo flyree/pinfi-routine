@@ -12,6 +12,18 @@
 //#define NOSTACKFRAMEOP
 //#define ONLYFP
 
+KNOB<string> routine_name(KNOB_MODE_WRITEONCE,"pintool","rn","main","specify routine name");
+
+KNOB<UINT32> firoutine(KNOB_MODE_WRITEONCE, "pintool", "fir", "0", "enbale routine error injection");
+
+KNOB<UINT32> fifp(KNOB_MODE_WRITEONCE, "pintool", "fifp", "0", "enbale fp only error injection")
+
+KNOB<UINT32> firange_l(KNOB_MODE_WRITEONCE, "pintool", "firl", "0", "the first bit to inject")
+
+KNOB<UINT32> firange_r(KNOB_MODE_WRITEONCE, "pintool", "firr", "64", "the last bit to inject")
+
+KNOB<UINT32> index_fi(KNOB_MODE_WRITEONCE,"pintool","idx","0","injecting index");
+
 UINT64 fi_inject_instance = 0;
 UINT64 fi_iterator = 0;
 UINT64 total_num_inst = 0;
@@ -133,7 +145,7 @@ VOID inject_SP_FP(VOID *ip, UINT32 reg_num, CONTEXT *ctxt){
 */
 
 
-VOID inject_CCS(VOID *ip, UINT32 reg_num, CONTEXT *ctxt){
+VOID inject_CCS(VOID *ip, UINT32 reg_num, CONTEXT *ctxt,int idx, int left, int right){
 	//need to consider FP regs and context
 	if(fi_iterator == fi_inject_instance) {
 		const REG reg =  reg_map.findInjectReg(reg_num);
@@ -146,21 +158,21 @@ VOID inject_CCS(VOID *ip, UINT32 reg_num, CONTEXT *ctxt){
 				//PRINT_MESSAGE(4, ("Executing: Float Reg name %s\n", REG_StringShort(reg).c_str()));
 
         if (REG_is_xmm(reg)) {
-          PRINT_MESSAGE(4, ("Executing: xmm: Reg name %s\n", REG_StringShort(reg).c_str()));
+          fprintf(activationFile, "Executing: xmm: Reg name %s\n", REG_StringShort(reg).c_str());
 
-					FI_SetXMMContextReg(ctxt, reg, reg_num);
+					FI_SetXMMContextReg(ctxt, reg, reg_num,left,right);
 				}
 				else if (REG_is_ymm(reg)) {
 					
-					PRINT_MESSAGE(4, ("Executing: ymm: Reg name %s\n", REG_StringShort(reg).c_str()));
+					fprintf(activationFile, "Executing: ymm: Reg name %s\n", REG_StringShort(reg).c_str());
 
-					FI_SetYMMContextReg(ctxt, reg, reg_num);
+					FI_SetYMMContextReg(ctxt, reg, reg_num,left,right);
 				}
 				//else if(REG_is_fr_or_x87(reg) || REG_is_mm(reg)) {
 				else if(REG_is_fr(reg) || REG_is_mm(reg)) {
-					PRINT_MESSAGE(4, ("Executing: mm or x87: Reg name %s\n", REG_StringShort(reg).c_str()));
+					fprintf(activationFile, "Executing: mm or x87: Reg name %s\n", REG_StringShort(reg).c_str());
 
-					FI_SetSTContextReg(ctxt, reg, reg_num);
+					FI_SetSTContextReg(ctxt, reg, reg_num,left,right);
 				}
 				else {
 					fprintf(stderr, "Register %s not covered!\n", REG_StringShort(reg).c_str());
@@ -190,7 +202,7 @@ VOID inject_CCS(VOID *ip, UINT32 reg_num, CONTEXT *ctxt){
                         //FI_PrintActivationInfo();	
 		}
 		if(isvalid){
-			fprintf(activationFile, "Activated: Valid Reg name %s in %p\n", REG_StringShort(reg).c_str(), ip);
+			fprintf(activationFile, "FI %d Activated: Valid Reg name %s in %p\n", idx,REG_StringShort(reg).c_str(), ip);
 			fclose(activationFile); // can crash after this!
 			activated = 1;
 			fi_iterator ++;
@@ -462,13 +474,41 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
 
 	}
 
-
+	int isroutine = firoutine.Value();
+  	int isfp = fifp.Value();
+  	std::string rtn_name_input = routine_name.Value();
+  	int idx = index_fi.Value();
+  	int lbound = firange_l.Value();
+    int rbound = firange_r.Value();
+  	if (isroutine == 1)
+  	{
+    	RTN rtn = RTN_Rtn(ins);
+    	std::string rtn_name = RTN_Name(rtn);
+    	if (rtn_name.find(rtn_name_input) == std::string::npos)
+        	return;
+    	if (isfp == 1)
+    	{
+      		int numW = INS_MaxNumWRegs(ins);
+      		bool hasfp = false;
+      		for (int i = 0; i < numW; i++){
+          		if (reg_map.isFloatReg(reg)) {
+              		hasfp = true;
+              		break;
+      			}
+    		}
+    	if (!hasfp){
+      		return;  
+    	}
+    }
 
 	    INS_InsertPredicatedCall(
 					ins, IPOINT_AFTER, (AFUNPTR)inject_CCS,
 					IARG_ADDRINT, INS_Address(ins),
 					IARG_UINT32, index,	
 					IARG_CONTEXT,
+					IARG_UINT32,idx,
+					IARG_UINT32,lbound,
+					IARG_UINT32,rbound,
 					IARG_END);		
 #endif        
 

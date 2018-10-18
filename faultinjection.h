@@ -15,9 +15,6 @@ KNOB<string> fioption(KNOB_MODE_WRITEONCE, "pintool", "fioption", "", "specify f
 KNOB<string> fi_activation_file (KNOB_MODE_WRITEONCE, "pintool",
     "fi_activation", "activate", "specify fault injection activation file");
 
-KNOB<BOOL> fiecc(KNOB_MODE_WRITEONCE, "pintool", "e", "0", "enbale ecc error injection");
-KNOB<UINT32> multibits(KNOB_MODE_WRITEONCE,"pintool","m","2","how many bits to inject");
-KNOB<BOOL> consecutive(KNOB_MODE_WRITEONCE,"pintool","c","0","if the injected bits are consecutive");
 //typedef uint64_t UINT64;
 //typedef uint32_t UINT32;
 
@@ -295,7 +292,7 @@ class RegMap{
 RegMap reg_map;
 
 // FI: set the X87 ST[0-7] or MM[0-7] context register
-VOID FI_SetSTContextReg (CONTEXT* ctxt, REG reg, UINT32 reg_num)
+VOID FI_SetSTContextReg (CONTEXT* ctxt, REG reg, UINT32 reg_num,int left, int right)
 {
 	//INPUT: x87 or st0-7 or MM[0-7]
 	//choose st[i] to inject
@@ -317,6 +314,8 @@ VOID FI_SetSTContextReg (CONTEXT* ctxt, REG reg, UINT32 reg_num)
 	
 	UINT32 low_bound_bit = reg_map.findLowBoundBit(reg_num);
 	UINT32 high_bound_bit = reg_map.findHighBoundBit(reg_num);
+	low_bound_bit = right;
+	high_bound_bit = left;
 
 	UINT32 inject_bit = (rand() % (high_bound_bit - low_bound_bit)) + low_bound_bit;
 	
@@ -345,7 +344,7 @@ VOID FI_SetSTContextReg (CONTEXT* ctxt, REG reg, UINT32 reg_num)
 }
 
 // FI: set the XMM[0-7] context register
-VOID FI_SetXMMContextReg (CONTEXT* ctxt, REG reg, UINT32 reg_num)
+VOID FI_SetXMMContextReg (CONTEXT* ctxt, REG reg, UINT32 reg_num,int left, int right)
 {
 	//choose XMM[i] to inject
 	string reg_name = REG_StringShort(reg);
@@ -359,7 +358,8 @@ VOID FI_SetXMMContextReg (CONTEXT* ctxt, REG reg, UINT32 reg_num)
 	
 	UINT32 low_bound_bit = reg_map.findLowBoundBit(reg_num);
 	UINT32 high_bound_bit = reg_map.findHighBoundBit(reg_num);
-
+	low_bound_bit = right;
+	high_bound_bit = left;
 	UINT32 inject_bit = (rand() % (high_bound_bit - low_bound_bit)) + low_bound_bit;
   
    // JIESHENG: this is not a right change from the hardware perspective, but it
@@ -399,7 +399,7 @@ VOID FI_SetXMMContextReg (CONTEXT* ctxt, REG reg, UINT32 reg_num)
 }
 
 // FI: set the YMM[0-7] context register
-VOID FI_SetYMMContextReg (CONTEXT* ctxt, REG reg, UINT32 reg_num)
+VOID FI_SetYMMContextReg (CONTEXT* ctxt, REG reg, UINT32 reg_num,int left, int right)
 {
 	//choose YMM[i] to inject
 	string reg_name = REG_StringShort(reg);
@@ -413,7 +413,8 @@ VOID FI_SetYMMContextReg (CONTEXT* ctxt, REG reg, UINT32 reg_num)
 	
 	UINT32 low_bound_bit = reg_map.findLowBoundBit(reg_num);
 	UINT32 high_bound_bit = reg_map.findHighBoundBit(reg_num);
-
+	low_bound_bit = right;
+	high_bound_bit = left;
 	UINT32 inject_bit = (rand() % (high_bound_bit - low_bound_bit)) + low_bound_bit;
 	
 	//FIXME: change number below to parameter

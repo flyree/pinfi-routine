@@ -19,6 +19,12 @@
 
 KNOB<string> instcount_file(KNOB_MODE_WRITEONCE, "pintool",
     "o", "pin.instcount.txt", "specify instruction count file name");
+
+KNOB<string> routine_name(KNOB_MODE_WRITEONCE,"pintool","rn","main","specify routine name");
+
+KNOB<UINT32> firoutine(KNOB_MODE_WRITEONCE, "pintool", "fir", "0", "enbale routine error injection");
+
+KNOB<UINT32> fifp(KNOB_MODE_WRITEONCE, "pintool", "fifp", "0", "enbale fp only error injection")
 	
 static UINT64 fi_all = 0;
 static UINT64 fi_ccs = 0;
@@ -93,12 +99,32 @@ VOID CountInst(INS ins, VOID *v)
   }
 #endif
 
-  
 // select instruction based on instruction type
   if(!isInstFITarget(ins))
     return;
-
-
+  int isroutine = firoutine.Value();
+  int isfp = fifp.Value();
+  std::string rtn_name_input = routine_name.Value();
+  if (isroutine == 1)
+  {
+    RTN rtn = RTN_Rtn(ins);
+    std::string rtn_name = RTN_Name(rtn);
+    if (rtn_name.find(rtn_name_input) == std::string::npos)
+        return;
+    if (isfp == 1)
+    {
+      int numW = INS_MaxNumWRegs(ins);
+      bool hasfp = false;
+      for (int i = 0; i < numW; i++){
+          if (reg_map.isFloatReg(reg)) {
+              hasfp = true;
+              break;
+      }
+    }
+    if (!hasfp){
+      return;  
+    }
+  }
 	INS_InsertPredicatedCall(
 				ins, IPOINT_AFTER, (AFUNPTR)countAllInst,
 				IARG_END);	
