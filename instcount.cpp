@@ -37,7 +37,7 @@ VOID CountInst(INS ins, VOID *v)
 {
   if (!isValidInst(ins))
     return;
-
+/*
 #ifdef INCLUDEALLINST
  	int numW = INS_MaxNumWRegs(ins), mayChangeControlFlow = 0;
    if(!INS_HasFallThrough(ins))
@@ -93,7 +93,7 @@ VOID CountInst(INS ins, VOID *v)
     return;  
   }
 #endif
-
+*/
 // select instruction based on instruction type
   if(!isInstFITarget(ins))
     return;
@@ -125,7 +125,7 @@ VOID CountInst(INS ins, VOID *v)
 	INS_InsertPredicatedCall(
 				ins, IPOINT_AFTER, (AFUNPTR)countAllInst,
 				IARG_END);	
-#endif
+
 
 
 }

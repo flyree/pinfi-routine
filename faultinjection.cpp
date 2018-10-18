@@ -506,6 +506,56 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
 
 }
 
+
+VOID instruction_InstrumentationFP(INS ins, VOID *v){
+	// decides where to insert the injection calls and what calls to inject
+  if (!isValidInst(ins))
+    return;
+	
+	
+
+	int isroutine = firoutine.Value();
+  	int isfp = fifp.Value();
+  	std::string rtn_name_input = routine_name.Value();
+  	int idx = index_fi.Value();
+  	int lbound = firange_l.Value();
+    int rbound = firange_r.Value();
+  	if (isroutine == 1)
+  	{
+    	RTN rtn = INS_Rtn(ins);
+    	std::string rtn_name = RTN_Name(rtn);
+    	if (rtn_name.find(rtn_name_input) == std::string::npos)
+        	return;
+    	if (isfp == 1)
+    	{
+      		int numW = INS_MaxNumWRegs(ins);
+      		bool hasfp = false;
+      		for (int i = 0; i < numW; i++){
+      			REG reg = INS_RegW(ins, i);
+          		if (REG_is_mm(reg) || REG_is_xmm_ymm_zmm(reg)){
+              		hasfp = true;
+              		break;
+      			}
+    		}
+    	if (!hasfp){
+      		return;  
+    	}
+    	}
+    }
+
+	    INS_InsertPredicatedCall(
+					ins, IPOINT_AFTER, (AFUNPTR)inject_CCS,
+					IARG_ADDRINT, INS_Address(ins),
+					IARG_UINT32, index,	
+					IARG_CONTEXT,
+					IARG_UINT32,idx,
+					IARG_UINT32,lbound,
+					IARG_UINT32,rbound,
+					IARG_END);		
+  
+
+}
+
 VOID get_instance_number(const char* fi_instcount_file)
 {
 	FILE *fi_input_FILE = fopen(fi_instcount_file, "r");
@@ -594,11 +644,8 @@ int main(int argc, char *argv[])
 
 	get_instance_number(instcount_file.Value().c_str());
 
-	if (!fiecc.Value())
-	INS_AddInstrumentFunction(instruction_Instrumentation, 0);
-
-	else
-		INS_AddInstrumentFunction(instruction_InstrumentationECC, 0);
+	
+	INS_AddInstrumentFunction(instruction_InstrumentationFP, 0);
 
 	PIN_AddFiniFunction(Fini, 0);
 
