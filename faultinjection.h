@@ -15,6 +15,18 @@ KNOB<string> fioption(KNOB_MODE_WRITEONCE, "pintool", "fioption", "", "specify f
 KNOB<string> fi_activation_file (KNOB_MODE_WRITEONCE, "pintool",
     "fi_activation", "activate", "specify fault injection activation file");
 
+
+KNOB<string> routine_name(KNOB_MODE_WRITEONCE,"pintool","rn","main","specify routine name");
+
+KNOB<UINT32> firoutine(KNOB_MODE_WRITEONCE, "pintool", "fir", "0", "enbale routine error injection");
+
+KNOB<UINT32> fifp(KNOB_MODE_WRITEONCE, "pintool", "fifp", "0", "enbale fp only error injection")
+
+KNOB<UINT32> firange_l(KNOB_MODE_WRITEONCE, "pintool", "firl", "0", "the first bit to inject")
+
+KNOB<UINT32> firange_r(KNOB_MODE_WRITEONCE, "pintool", "firr", "64", "the last bit to inject")
+
+KNOB<UINT32> index_fi(KNOB_MODE_WRITEONCE,"pintool","idx","0","injecting index");
 //typedef uint64_t UINT64;
 //typedef uint32_t UINT32;
 

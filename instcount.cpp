@@ -108,23 +108,24 @@ VOID CountInst(INS ins, VOID *v)
   std::string rtn_name_input = routine_name.Value();
   if (isroutine == 1)
   {
-    RTN rtn = RTN_Rtn(ins);
-    std::string rtn_name = RTN_Name(rtn);
-    if (rtn_name.find(rtn_name_input) == std::string::npos)
-        return;
-    if (isfp == 1)
-    {
-      int numW = INS_MaxNumWRegs(ins);
-      bool hasfp = false;
-      for (int i = 0; i < numW; i++){
-          if (reg_map.isFloatReg(reg)) {
-              hasfp = true;
-              break;
+      RTN rtn = INS_Rtn(ins);
+      std::string rtn_name = RTN_Name(rtn);
+      if (rtn_name.find(rtn_name_input) == std::string::npos)
+          return;
+      if (isfp == 1)
+      {
+        int numW = INS_MaxNumWRegs(ins);
+        bool hasfp = false;
+        for (int i = 0; i < numW; i++){
+            if (reg_map.isFloatReg(reg)) {
+                hasfp = true;
+                break;
+            }
+        }
+        if (!hasfp){
+          return;  
+        }
       }
-    }
-    if (!hasfp){
-      return;  
-    }
   }
 	INS_InsertPredicatedCall(
 				ins, IPOINT_AFTER, (AFUNPTR)countAllInst,

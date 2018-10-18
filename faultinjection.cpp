@@ -12,17 +12,7 @@
 //#define NOSTACKFRAMEOP
 //#define ONLYFP
 
-KNOB<string> routine_name(KNOB_MODE_WRITEONCE,"pintool","rn","main","specify routine name");
 
-KNOB<UINT32> firoutine(KNOB_MODE_WRITEONCE, "pintool", "fir", "0", "enbale routine error injection");
-
-KNOB<UINT32> fifp(KNOB_MODE_WRITEONCE, "pintool", "fifp", "0", "enbale fp only error injection")
-
-KNOB<UINT32> firange_l(KNOB_MODE_WRITEONCE, "pintool", "firl", "0", "the first bit to inject")
-
-KNOB<UINT32> firange_r(KNOB_MODE_WRITEONCE, "pintool", "firr", "64", "the last bit to inject")
-
-KNOB<UINT32> index_fi(KNOB_MODE_WRITEONCE,"pintool","idx","0","injecting index");
 
 UINT64 fi_inject_instance = 0;
 UINT64 fi_iterator = 0;
@@ -482,7 +472,7 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
     int rbound = firange_r.Value();
   	if (isroutine == 1)
   	{
-    	RTN rtn = RTN_Rtn(ins);
+    	RTN rtn = INS_Rtn(ins);
     	std::string rtn_name = RTN_Name(rtn);
     	if (rtn_name.find(rtn_name_input) == std::string::npos)
         	return;
