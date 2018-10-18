@@ -21,12 +21,6 @@
 KNOB<string> instcount_file(KNOB_MODE_WRITEONCE, "pintool",
     "o", "pin.instcount.txt", "specify instruction count file name");
 
-KNOB<string> routine_name(KNOB_MODE_WRITEONCE,"pintool","rn","main","specify routine name");
-
-KNOB<UINT32> firoutine(KNOB_MODE_WRITEONCE, "pintool", "fir", "0", "enbale routine error injection");
-
-KNOB<UINT32> fifp(KNOB_MODE_WRITEONCE, "pintool", "fifp", "0", "enbale fp only error injection");
-	
 static UINT64 fi_all = 0;
 static UINT64 fi_ccs = 0;
 static UINT64 fi_sp = 0;
