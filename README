@@ -28,6 +28,7 @@ For routine and FP injection:
 the options are:
 
 "fir": enbale routine fault injection (value e.g. 1)
+"fifp": enable fp fault injection (value e.g. 1)
 "rn": the name of the routine (value e.g. main)
 "firange_l": the highest bit you want to inject (value e.g. 63)
 "firange_r": the lowest bit you want to inject (value e.g. 0)
