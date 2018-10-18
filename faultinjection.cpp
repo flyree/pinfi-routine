@@ -481,7 +481,8 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
       		int numW = INS_MaxNumWRegs(ins);
       		bool hasfp = false;
       		for (int i = 0; i < numW; i++){
-          		if (reg_map.isFloatReg(reg)) {
+      			REG reg = INS_RegW(ins, i);
+          		if (REG_is_mm(reg) || REG_is_xmm_ymm_zmm(reg)){
               		hasfp = true;
               		break;
       			}

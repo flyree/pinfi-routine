@@ -112,7 +112,7 @@ VOID CountInst(INS ins, VOID *v)
         bool hasfp = false;
         for (int i = 0; i < numW; i++){
             REG reg = INS_RegW(ins, i);
-            if (reg_map.isFloatReg(reg)) {
+           if (REG_is_mm(reg) || REG_is_xmm_ymm_zmm(reg)) {
                 hasfp = true;
                 break;
             }
