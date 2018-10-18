@@ -104,7 +104,7 @@ VOID CountInst(INS ins, VOID *v)
   {
       RTN rtn = INS_Rtn(ins);
       std::string rtn_name = RTN_Name(rtn);
-      if (rtn_name.find(rtn_name_input) == std::string::npos)
+      if (rtn_name.find(rtn_name_input.c_str()) == std::string::npos)
           return;
       if (isfp == 1)
       {
