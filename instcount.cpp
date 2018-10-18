@@ -8,6 +8,7 @@
 #include "pin.H"
 #include "utils.h"
 #include "instselector.h"
+#include "faultinjection.h"
 
 //#include "faultinjection.h"
 //#include "commonvars.h"
@@ -24,7 +25,7 @@ KNOB<string> routine_name(KNOB_MODE_WRITEONCE,"pintool","rn","main","specify rou
 
 KNOB<UINT32> firoutine(KNOB_MODE_WRITEONCE, "pintool", "fir", "0", "enbale routine error injection");
 
-KNOB<UINT32> fifp(KNOB_MODE_WRITEONCE, "pintool", "fifp", "0", "enbale fp only error injection")
+KNOB<UINT32> fifp(KNOB_MODE_WRITEONCE, "pintool", "fifp", "0", "enbale fp only error injection");
 	
 static UINT64 fi_all = 0;
 static UINT64 fi_ccs = 0;
