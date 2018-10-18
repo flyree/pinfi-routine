@@ -21,3 +21,15 @@ HOW TO USE PINFI:
   - optionlist: configure parameters as desired based on the benchmark undertest.
 
 - Put the instructions category (default is 'all') that are desired to be fault injected in pin.instcategory.txt under the directory where faultinject.py locates, and run faultinject.py to inject faults in the specified locations. We provide an example of the pin.instcategory.txt file in example/ as well.
+
+
+For routine and FP injection:
+
+the options are:
+
+"fir": enbale routine fault injection (value e.g. 1)
+"rn": the name of the routine (value e.g. main)
+"firange_l": the highest bit you want to inject (value e.g. 63)
+"firange_r": the lowest bit you want to inject (value e.g. 0)
+
+
