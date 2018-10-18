@@ -387,8 +387,8 @@ VOID FI_SetXMMContextReg (CONTEXT* ctxt, REG reg, UINT32 reg_num,int left, int r
 
   // JIESHNEG: something wrong, just to test whether the xmm injection is correct or not
   //
-  srand(time(NULL));
-  inject_bit = (rand() % 64);
+  //srand(time(NULL));
+  //inject_bit = (rand() % 64);
   std::cerr << "Inject into bit " << inject_bit << std::endl;
 
 	if(inject_bit < 64) {
