@@ -512,7 +512,17 @@ VOID instruction_InstrumentationFP(INS ins, VOID *v){
   if (!isValidInst(ins))
     return;
 	
-	
+	int numW = INS_MaxNumWRegs(ins), randW = 0;
+	UINT32 index = 0;
+
+		
+    // FIXME: INCLUDEINST is not used now. However, if you enable this option
+    // in the future, you need to change the code below. If it changes the 
+    // control flow, you need to inject fault in the read register rather than
+    // write register
+
+
+
 
 	int isroutine = firoutine.Value();
   	int isfp = fifp.Value();
@@ -534,6 +544,7 @@ VOID instruction_InstrumentationFP(INS ins, VOID *v){
       			REG reg = INS_RegW(ins, i);
           		if (REG_is_mm(reg) || REG_is_xmm_ymm_zmm(reg)){
               		hasfp = true;
+              		index = reg_map.findRegIndex(reg);
               		break;
       			}
     		}
@@ -552,7 +563,7 @@ VOID instruction_InstrumentationFP(INS ins, VOID *v){
 					IARG_UINT32,lbound,
 					IARG_UINT32,rbound,
 					IARG_END);		
-  
+      
 
 }
 
@@ -644,8 +655,11 @@ int main(int argc, char *argv[])
 
 	get_instance_number(instcount_file.Value().c_str());
 
-	
-	INS_AddInstrumentFunction(instruction_InstrumentationFP, 0);
+	if (!fiecc.Value())
+	INS_AddInstrumentFunction(instruction_Instrumentation, 0);
+
+	else
+		INS_AddInstrumentFunction(instruction_InstrumentationECC, 0);
 
 	PIN_AddFiniFunction(Fini, 0);
 
