@@ -243,7 +243,7 @@ class RegMap{
 			reg_map[81] = new Reg_Info(REG_R13, REG_R13, 0, 64, false);
 			reg_map[82] = new Reg_Info(REG_R14, REG_R14, 0, 64, false);
 			reg_map[83] = new Reg_Info(REG_R15, REG_R15, 0, 64, false);
-			//reg_map[84] = new Reg_Info(REG_R16, REG_R16, 0, 64, false);
+			reg_map[84] = new Reg_Info(REG_R16, REG_R16, 0, 64, false);
 			
 			reg_map[85] = new Reg_Info(REG_R8D, REG_R8, 0, 32, false);
 			reg_map[86] = new Reg_Info(REG_R9D, REG_R9, 0, 32, false);
@@ -253,7 +253,7 @@ class RegMap{
 			reg_map[90] = new Reg_Info(REG_R13D, REG_R13, 0, 32, false);
 			reg_map[91] = new Reg_Info(REG_R14D, REG_R14, 0, 32, false);
 			reg_map[92] = new Reg_Info(REG_R15D, REG_R15, 0, 32, false);
-			//reg_map[93] = new Reg_Info(REG_R16D, REG_R16, 0, 32, false);
+			reg_map[93] = new Reg_Info(REG_R16D, REG_R16, 0, 32, false);
 			
 			reg_map[94] = new Reg_Info(REG_R8W, REG_R8, 0, 16, false);
 			reg_map[95] = new Reg_Info(REG_R9W, REG_R9, 0, 16, false);
@@ -263,7 +263,7 @@ class RegMap{
 			reg_map[99] = new Reg_Info(REG_R13W, REG_R13, 0, 16, false);
 			reg_map[100] = new Reg_Info(REG_R14W, REG_R14, 0, 16, false);
 			reg_map[101] = new Reg_Info(REG_R15W, REG_R15, 0, 16, false);
-			//reg_map[102] = new Reg_Info(REG_R16W, REG_R16, 0, 16, false);
+			reg_map[102] = new Reg_Info(REG_R16W, REG_R16, 0, 16, false);
 			
 			reg_map[103] = new Reg_Info(REG_R8B, REG_R8, 0, 8, false);
 			reg_map[104] = new Reg_Info(REG_R9B, REG_R9, 0, 8, false);

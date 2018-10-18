@@ -512,7 +512,7 @@ VOID instruction_InstrumentationFP(INS ins, VOID *v){
   if (!isValidInst(ins))
     return;
 	
-	int numW = INS_MaxNumWRegs(ins), randW = 0;
+	//int numW = INS_MaxNumWRegs(ins), randW = 0;
 	UINT32 index = 0;
 
 		
