@@ -323,6 +323,9 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
 	UINT32 index = 0;
 	REG reg;
   
+	  if(!isInstFITarget(ins))
+    return;
+  /*
 #ifdef INCLUDEALLINST	
   int mayChangeControlFlow = 0;
         if(!INS_HasFallThrough(ins))
@@ -398,8 +401,7 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
 
 
 // select instruction based on instruction type
-  if(!isInstFITarget(ins))
-    return;
+
 
 
 
@@ -418,20 +420,19 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
     }
 #endif
 
-  if(numW > 1 && (reg == REG_RFLAGS || reg == REG_FLAGS || reg == REG_EFLAGS))
+  	if(numW > 1 && (reg == REG_RFLAGS || reg == REG_FLAGS || reg == REG_EFLAGS))
            randW = (randW + 1) % numW; 
-		if(numW > 1 && REG_valid(INS_RegW(ins, randW)))
-            reg = INS_RegW(ins, randW);
-        else
+	if(numW > 1 && REG_valid(INS_RegW(ins, randW)))
+           reg = INS_RegW(ins, randW);
+    else
             reg = INS_RegW(ins, 0);
-        if(!REG_valid(reg)) {
-
-            LOG("REGNOTVALID: inst " + INS_Disassemble(ins) + "\n");
-            return;
-      }
-        index = reg_map.findRegIndex(reg);
-        LOG("ins:" + INS_Disassemble(ins) + "\n"); 
-		LOG("reg:" + REG_StringShort(reg) + "\n");
+    if(!REG_valid(reg)) {
+		LOG("REGNOTVALID: inst " + INS_Disassemble(ins) + "\n");
+        return;
+    }
+    index = reg_map.findRegIndex(reg);
+    LOG("ins:" + INS_Disassemble(ins) + "\n"); 
+	LOG("reg:" + REG_StringShort(reg) + "\n");
 
 // Jiesheng Wei
 	if (reg == REG_RFLAGS || reg == REG_FLAGS || reg == REG_EFLAGS) {
@@ -439,7 +440,7 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
 		if (INS_Valid(next_ins) && INS_Category(next_ins) == XED_CATEGORY_COND_BR) {
       //LOG("inject flag bit:" + REG_StringShort(reg) + "\n");
 			
-      UINT32 jmpindex = jmp_map.findJmpIndex(OPCODE_StringShort(INS_Opcode(next_ins)));
+      		UINT32 jmpindex = jmp_map.findJmpIndex(OPCODE_StringShort(INS_Opcode(next_ins)));
 			INS_InsertPredicatedCall(ins, IPOINT_AFTER, (AFUNPTR)FI_InjectFault_FlagReg,
 						IARG_INST_PTR,
 						IARG_UINT32, index,
@@ -447,7 +448,8 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
 						IARG_CONTEXT,
 						IARG_END);
 			return;
-		} else if (INS_IsMemoryWrite(ins)) {
+	} else if 
+		(INS_IsMemoryWrite(ins)) {
         LOG("COMP2MEM: inst " + INS_Disassemble(ins) + "\n");
 				
         INS_InsertPredicatedCall(
@@ -458,11 +460,12 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
 								IARG_END);
         return;
     
-    } else {
-      LOG("NORMAL FLAG REG: inst " + INS_Disassemble(ins) + "\n");
-    }
+    } 
+    	else {
+      		LOG("NORMAL FLAG REG: inst " + INS_Disassemble(ins) + "\n");
+    	}
 
-	}
+	}*/
 
 	int isroutine = firoutine.Value();
   	int isfp = fifp.Value();
@@ -484,6 +487,7 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
       			REG reg = INS_RegW(ins, i);
           		if (REG_is_mm(reg) || REG_is_xmm_ymm_zmm(reg)){
               		hasfp = true;
+              		index = reg_map.findRegIndex(reg);
               		break;
       			}
     		}
@@ -502,8 +506,7 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
 					IARG_UINT32,lbound,
 					IARG_UINT32,rbound,
 					IARG_END);		
-#endif        
-
+//
 }
 
 
