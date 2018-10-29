@@ -34,4 +34,7 @@ the options are:
 "firange_l": the highest bit you want to inject (value e.g. 63)
 "firange_r": the lowest bit you want to inject (value e.g. 0)
 
+So the injection command could look like this:
+
+./pin-3.5-97503-gac534ca30-gcc-linux/pin -t .pin-3.5-97503-gac534ca30-gcc-linux/source/tools/pinfi/obj-intel64/faultinjection.so -fioption AllInst -fir 1 -rn CollectDomainNodesToElemNodes -fifp 1 -firl 32 -firr 1 -idx 5 -- ./lulesh 10
 
