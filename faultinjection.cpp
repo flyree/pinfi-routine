@@ -319,9 +319,9 @@ VOID instruction_Instrumentation(INS ins, VOID *v){
   if (!isValidInst(ins))
     return;
 	
-	int numW = INS_MaxNumWRegs(ins), randW = 0;
+	//int numW = INS_MaxNumWRegs(ins), randW = 0;
 	UINT32 index = 0;
-	REG reg;
+	//REG reg;
   
 	  if(!isInstFITarget(ins))
     return;
